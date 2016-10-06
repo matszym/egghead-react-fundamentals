@@ -2,7 +2,7 @@ module.exports = {
   entry: './main.js',
   output: {
     path: './',
-    filename: 'index.html'
+    filename: 'index.js'
   },
   devServer: {
     inline: true,

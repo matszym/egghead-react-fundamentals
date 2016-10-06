@@ -3,8 +3,9 @@ app:
   memswap_limit: 1g
   build: .
   ports: 
-    - '80:3000'
+    - '3333:3333'
   volumes:
     - .:/home/nodejs/app
     - /home/nodejs/node_modules
-  command: /bin/sh -c "while true; do sleep 1000; done"
+  #command: /bin/sh -c "while true; do sleep 1000; done"
+  command: npm start
