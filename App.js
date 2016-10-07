@@ -7,25 +7,42 @@ class App extends React.Component {
     this.state = { txt: '' };
   }
   update(e) {
-    this.setState({txt: e.target.value});
+    this.setState({
+      red: ReactDOM.findDOMNode(this.refs.red).value,
+      green: ReactDOM.findDOMNode(this.refs.green).value,
+      blue: ReactDOM.findDOMNode(this.refs.blue).value
+    });
   }
   render() {
     let txt = this.props.txt;
 
     return (
-      <Widget txt={this.state.txt} update={ e => this.update(e) } />
+      <div>
+        <Slider ref="red" update={e => this.update(e)} />
+        {this.state.red}
+        <br />
+        <Slider ref="green" update={e => this.update(e)} />
+        {this.state.green}
+        <br />
+        <Slider ref="blue" update={e => this.update(e)} />
+        {this.state.blue}
+        <br />
+      </div>
     )
   }
 }
 
-const Widget = props => {
-  return (
-    <div>
-      <input type="text"
-        onChange={ props.update } />
-      <h1>{ props.txt }</h1>
-    </div>    
-  )
+class Slider extends React.Component {
+  render() {
+    return (
+        <input 
+          type="range"
+          min="0"
+          max="255"
+          onChange={ this.props.update } 
+        />
+    )
+  }
 }
 
 ReactDOM.render(
