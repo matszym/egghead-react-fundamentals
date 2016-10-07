@@ -2,27 +2,59 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      val: 0
+    };
+  }
+  update() {
+    this.setState({
+      val: this.state.val + 1
+    });
+  }
+  componentWillMount() {
+    console.log('will mount!');
+  }
+  componentDidMount() {
+    console.log('mounted!');
+  }
+  componentWillUnmount() {
+    console.log('unmounting...');
+  }
   render() {
+    console.log('rendering');
     return (
-      <Button>I <Heart /> React</Button>
+      <button
+        onClick={ () => this.update() }>
+        {this.state.val}
+      </button>
     )
   }
 }
 
-class Button extends React.Component {
-  componentDidMount() {
-    console.log(this.props.children);
+class Wrapper extends React.Component {
+  constructor() {
+    super();
+  }
+  mount() {
+    ReactDOM.render(
+      <App />,
+      document.getElementById('a')
+    );
+  }
+  unmount() {
+    ReactDOM.unmountComponentAtNode(document.getElementById('a'));
   }
   render() {
-    // this.props.children 
-    // is basically poor man's transclude equivalent
-    return <button>{this.props.children}</button>
+    return (
+      <div>
+        <button onClick={ () => this.mount() }>Mount</button>
+        <button onClick={ () => this.unmount() }>Unmount</button>
+        <div id="a"></div>
+      </div>
+    );
   }
 }
 
-const Heart = () => <span className="glyphicon glyphicon-heart"></span>
-
-ReactDOM.render(
-  <App cat={5} />,
-  document.getElementById('app')
-);
+export default Wrapper;
