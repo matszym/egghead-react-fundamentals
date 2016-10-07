@@ -7,5 +7,4 @@ app:
   volumes:
     - .:/home/nodejs/app
     - /home/nodejs/node_modules
-  #command: /bin/sh -c "while true; do sleep 1000; done"
   command: npm start
