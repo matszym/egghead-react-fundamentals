@@ -1,45 +1,56 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class App extends React.Component {
+let Mixin = InnerComponent => class extends React.Component {
   constructor() {
     super();
     this.state = {
-      increasing: false
-    };
+      val: 0
+    }
   }
   update() {
-    ReactDOM.render(
-      <App val={this.props.val+1} />,
-      document.getElementById('app')
-    );
-  }
-  shouldComponentUpdate(nextProps, nextState) {
-    //expects bolean
-    return nextProps.val % 5 === 0;
-  }
-  componentWillReceiveProps(nextProps) {
     this.setState({
-      increasing: nextProps.val > this.props.val
+      val: this.state.val + 1
     });
   }
-  componentDidUpdate(prevProps, prevState) {
-    console.log(`prevProps: ${prevProps.val}`);
-    console.log("prevState: ", prevState);
+  componentWillMount() {
+    console.log('component will mount');
+  }
+  componentDidMount() {
+    console.log('component did mount');
   }
   render() {
-    console.log(this.state.increasing);
     return (
-      <button
-        onClick={ () => this.update() }>
-        { this.props.val }
-      </button>
+      <InnerComponent
+          update={ ()=> this.update() } 
+          { ...this.state }
+          { ...this.props } />
     )
   }
 }
 
-App.defaultProps = {
-  val: 0
-};
+const Button = props => <button 
+  onClick={props.update}>
+  { props.txt } - { props.val }
+</button>
+
+const Label = props => <label 
+  onMouseMove={props.update}>
+  { props.txt } - { props.val }
+</label>
+
+let ButtonMixed = Mixin(Button);
+let LabelMixed = Mixin(Label);
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <ButtonMixed txt="Button" />
+        <LabelMixed txt="Label" />
+      </div>
+    );
+  }
+}
 
 export default App;
